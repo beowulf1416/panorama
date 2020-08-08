@@ -1,28 +1,41 @@
+extern crate config;
 extern crate log;
 extern crate simplelog;
 
 extern crate daemonize;
 
+mod settings;
+// use settings::{Source};
+
+use std::fs::File;
+// use std::collections::HashMap;
+use std::{thread, time};
+
+use config::Config;
+
 use log::{info/*, trace*/, warn};
 use simplelog::*;
-use std::fs::File;
 
 use daemonize::Daemonize;
 
-use std::{thread, time};
-
 
 fn main() {
+    let mut settings = Config::default();
+    settings.merge(config::File::with_name("conf/sources.json")).unwrap();
+
+    // let sources = settings.get::<Vec<Source>>("cameras").unwrap();
+    // println!("\n{:?}\n", sources[0].name);
+
     CombinedLogger::init(
         vec![
             TermLogger::new(
                 LevelFilter::Warn, 
-                Config::default(), 
+                simplelog::Config::default(), 
                 TerminalMode::Mixed
             ),
             WriteLogger::new(
                 LevelFilter::Info, 
-                Config::default(), 
+                simplelog::Config::default(), 
                 File::create("/tmp/panorama.log").unwrap()
             ),
         ]

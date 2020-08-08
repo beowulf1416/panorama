@@ -1,0 +1,8 @@
+{
+    "cameras": [
+        {
+            "type_id": "type1",
+            "name": "test1"
+        }
+    ]
+}
