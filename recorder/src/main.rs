@@ -5,7 +5,9 @@ extern crate simplelog;
 extern crate daemonize;
 
 mod settings;
-// use settings::{Source};
+use settings::{Source};
+
+mod camera;
 
 use std::fs::File;
 // use std::collections::HashMap;
@@ -43,7 +45,7 @@ fn main() {
 
     info!("starting up ...");
 
-    // let stdout = File::open("/tmp/panorama.log").unwrap();
+    init_cameras(&settings);
 
     let daemonize = Daemonize::new()
         .pid_file("/tmp/panorama-recorder.pid")
@@ -68,4 +70,14 @@ fn main() {
 
     thread::sleep(delay);
     info!("continuing");
+}
+
+fn init_cameras(settings: &Config) {
+    info!("initialize cameras...");
+    // println!("\n{:?}\n", settings);
+
+    let sources = settings.get::<Vec<Source>>("cameras").unwrap();
+    for source in sources.iter() {
+        println!("\n{:?}\n", source);
+    }
 }

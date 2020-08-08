@@ -3,6 +3,10 @@
         {
             "type_id": "type1",
             "name": "test1"
+        },
+        {
+            "type_id": "type2",
+            "name": "test2"
         }
     ]
 }
